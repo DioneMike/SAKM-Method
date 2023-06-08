@@ -6,11 +6,14 @@ from Kernel_Machine_Initialisation import Kernel_Machine_Initialisation
 def Kernel_Decision_Function(Xnew, ThSim, gamma,KM):
 
     global Rcum # Risque cumulé
-    # global KM
-    #global KM # une liste de noyaux  (ici vecteur de noyaux)
+   
+    Rcum = [0]
     
-    Rcum = []
-    #KM = 
+    
+    
+   
+    
+    
     
     WinK_SimK = np.empty((0, 2))  #liste de noyaux gagnant (leurs indices dans le vecteur de noyaux KM et leur valeur de similarité avec les données Xnew)
     a = 0 #
@@ -23,10 +26,10 @@ def Kernel_Decision_Function(Xnew, ThSim, gamma,KM):
         while m < len(KM) :
             
              
-            [dskm, fval ] = Kernel_Similarity_Mesure(Xnew, KM[m], gamma)
+            [dskm, fval] = Kernel_Similarity_Mesure(Xnew, KM[m], gamma)
             
-            # print("tiak tiak tiakkk",[dskm, fval ])
-            if (np.abs(dskm) <= ThSim) and (fval is not None):
+           
+            if (np.abs(dskm) <= ThSim) and (fval !=0) :
                 
                 new_row = np.array([int(m), fval])
                
@@ -35,6 +38,7 @@ def Kernel_Decision_Function(Xnew, ThSim, gamma,KM):
             m = m + 1
             if fval < 0 :
                 a = a + fval
+            
         
     if len(Rcum) == 0:
         
@@ -49,18 +53,21 @@ def Kernel_Decision_Function(Xnew, ThSim, gamma,KM):
     # Cas 3 : WinK_SimK = [[m1, dskm1], [m2, dskm2], ...] plusieurs noyaux gagnants
 
 
-# data = pd.read_csv('Env_nonstat.csv', sep='\t')
-
-# xo = np.array(data)[1:2595,0]
-# X =np.insert(np.array(data)[1:2595,0:2],1,xo,axis=1)
-# Gamma = 0.1
+# X = pd.read_csv('datatest.csv',sep=";", header=None)
+# X = np.array(X)
+# X0 = X[0,:].reshape(1,-1)
+# Gamma = 2
 # ThSim = 0.02
 # nu = 0.5
 # eta = 0.2
+# # global KM
+# global Rcum
+# Rcum=[0]
+# # KM = []
 # KM0 = []
-# KM1 = Kernel_Machine_Initialisation(X[1,:].reshape(1,-1) , Gamma, nu, eta,KM0)
-# KM = Kernel_Machine_Initialisation(X[5,:].reshape(1,-1) , Gamma, nu, eta,KM1)
+# KM1 = Kernel_Machine_Initialisation(X[0,:].reshape(1,-1) , Gamma, nu, eta,KM0)
+# KM = Kernel_Machine_Initialisation(X[1,:].reshape(1,-1) , Gamma, nu, eta,KM1)
 # # print(len(KM))
-# K = Kernel_Decision_Function(X[3,:].reshape(1,-1) ,ThSim, Gamma,KM1)
+# K = Kernel_Decision_Function(X[1,:].reshape(1,-1) ,ThSim, Gamma,KM)
 
 # print(K)

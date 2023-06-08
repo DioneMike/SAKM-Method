@@ -26,28 +26,27 @@ def Kernel_Merging_Function(KERN, nkern,Prmk, gamma, nu, eta, kard,KM) :
 
 
     
-    
+    # global KM
     
      # pour l'ensemble des noyaux
     X = np.empty((0,KERN[0]["data"].shape[1])) # pour stocker  l'ensemble des données fusionnées 
-    #KM = Kernel_Machine_Initialisation(X, gamma, nu, eta)
+    
     
     for m in range(len(KERN)):
-        # print(KERN[0]["data"].shape, KERN[1]["data"].shape)
-        #print(X.shape)
+       
         X = np.vstack((X, KERN[m]['data']))
-        #print(X.shape)
+        
     KernUpdat = KM[Prmk] # on initialise avec le premier noyau
      
     for i in range(X.shape[0]) :
         Xnew = X[i,:].reshape(1,-1)
         
-        # print(Xnew)
+        
         [dsk,fval] = Kernel_Similarity_Mesure(Xnew,KernUpdat,gamma,2)
-        #print([dsk,fval])
+        
         KernUpdat = KernelUpdate_NormTruncSGradient([[Prmk,fval]],Xnew,gamma,nu,eta,kard,KM)
         
-        print(KernUpdat)
+        
         KM[Prmk] = KernUpdat
         
 
@@ -70,11 +69,12 @@ def Kernel_Merging_Function(KERN, nkern,Prmk, gamma, nu, eta, kard,KM) :
 # eta = 0.03
 # nu = 0.1
 # kard = 3
-
-# KM0 = []
-# KM1 = Kernel_Machine_Initialisation(Xtest, Gamma, nu, eta,KM0)
-# KM2 = Kernel_Machine_Initialisation(Xtest, Gamma, nu, eta,KM1)
-# KM3 = Kernel_Machine_Initialisation(Xtest, Gamma, nu, eta,KM2)
-# KERN = KM2
-# K = Kernel_Merging_Function(KERN, nkern,Prmk, gamma, nu, eta, kard,KM3)
-# # print(K)
+# global KM
+# KM = []
+# # KM0 = []
+# # KM1 = Kernel_Machine_Initialisation(Xtest, Gamma, nu, eta,KM0)
+# # KM2 = Kernel_Machine_Initialisation(Xtest, Gamma, nu, eta,KM1)
+# # KM3 = Kernel_Machine_Initialisation(Xtest, Gamma, nu, eta,KM2)
+# KERN = KM
+# K = Kernel_Merging_Function(KERN, nkern,Prmk, gamma, nu, eta, kard)
+# # # print(K)

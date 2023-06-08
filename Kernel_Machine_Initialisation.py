@@ -4,6 +4,7 @@ import pandas as pd
 # Dans ce programme nous allons créer une fonction qui permettra d'initialiser l'ensemle noyau noté  KM de la machine
 
 
+
 def Kernel_Machine_Initialisation(Xini, Gamma, nu, eta,KM):
 
     # Xini: représente les nouvelles observations acquises à l'instant 
@@ -11,10 +12,11 @@ def Kernel_Machine_Initialisation(Xini, Gamma, nu, eta,KM):
     # nu  : paramétres permettant de regler le nombre de vecteurs de support
     # eta : représente le tau d'apprentissage du processus du gradiant stochastique
     
-      # variable globale permettant de stocker les noyaux
+     
    
-
-   
+    
+    
+    
     Xsv = Xini
     
     wgh = np.ones(Xsv.shape[0])
@@ -22,21 +24,15 @@ def Kernel_Machine_Initialisation(Xini, Gamma, nu, eta,KM):
     idsv = 0
     data = Xini
     kern={"wgh":wgh, "Xsv":Xini, "Rho":Rho, "idsv":idsv, "data":data}
-   # Kern =  Kernel(Wgh, Rho, data, idsv, Xsv)
+   
     if len(KM) == 0 : 
         # initialisation du premier noyau de la machine
-        # un noyau est caractérisé par ses paramétres (poids (Wgh), coef d'ajustement (Rho), supports vecteurs (Xsv), ses données (data))
+        # un noyau (une classe) est caractérisé par ses paramétres (poids (Wgh), coef d'ajustement (Rho), supports vecteurs (Xsv), ses données (data))
         KM = np.append(KM,kern)
         
 
     else : 
-        # Xsv = Xini
-        
-        # wgh = np.ones(Xsv.shape[0])
-        # Rho = eta*(1-nu)
-        # idsv = idsv+1
-        # data = Xini
-        # kern={"wgh":wgh, "Xsv":Xini, "Rho":Rho, "idsv":idsv, "data":data}
+       
         
         KM = np.append(KM, kern)
     
@@ -54,11 +50,12 @@ def Kernel_Machine_Initialisation(Xini, Gamma, nu, eta,KM):
 # nu = 0.5
 # eta = 2
 
-# km = []
+# global KM
+# KM= []
 
-# KMInit = Kernel_Machine_Initialisation(X , Gamma, nu, eta,km)
+# KMInit = Kernel_Machine_Initialisation(X[1,:].reshape(1,-1) , Gamma, nu, eta,KM)
 
-# print(KMInit[0]["data"].shape)        
+# print(KMInit)        
 
 
 

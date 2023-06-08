@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 from Kernel_Machine_Initialisation import Kernel_Machine_Initialisation 
 from KernelUpdate_NormTruncSGradient import KernelUpdate_NormTruncSGradient
+
+
 def Online_Learning_Kernel(Xnew, WK_Sim,gamma,nu,eta,kard,KM):
 
     # >>INPUT
@@ -16,20 +18,20 @@ def Online_Learning_Kernel(Xnew, WK_Sim,gamma,nu,eta,kard,KM):
 #     KM Kernel machine -> Structure modifié (variable global)
 #     Process: etat 1 si la donnée est traité 0 si Ambiguité (Mergin)
 
-    #global KM
+    # global KM
 
 
     if len(WK_Sim)== 0 :
 
         # Initialisation du noyau : le premier noyau ou un nouveau noyau
-        KM0 = []
-        KM = Kernel_Machine_Initialisation(Xnew,gamma,nu,eta,KM0)
+        
+        KM1 = Kernel_Machine_Initialisation(Xnew,gamma,nu,eta,KM)
         Process = 1  #Données traitée par le processus
         
 
     else :
         nw = len(WK_Sim)
-        # print(WK_Sim)
+        
         if nw == 1 :
             # Adaptation du noyau à l'aide de la technique de descente du gradient stochastique
     
@@ -37,9 +39,9 @@ def Online_Learning_Kernel(Xnew, WK_Sim,gamma,nu,eta,kard,KM):
             
             id = int(WK_Sim[0][0])
             KM[id] = KernUpdat
-            # print(KernUpdat)
+            
             Process = 1  #Données traitée par le processus
-    
+            
         else :
             Process = 0  #Données pas encore traitée par le processus :ambiguité (Fusion)
         
@@ -50,21 +52,26 @@ def Online_Learning_Kernel(Xnew, WK_Sim,gamma,nu,eta,kard,KM):
 WK_Sim = Kernel_Decision_Function(Xnew, ThSim, gamma)
 
 """
-
-# data = pd.read_csv('Env_nonstat.csv', sep='\t')
-# xo = np.array(data)[1:2595,0]
-# X =np.insert(np.array(data)[1:2595,0:2],1,xo,axis=1)
-# Gamma = 0.1
+# from Kernel_Decision_Function import Kernel_Decision_Function
+# # data = pd.read_csv('Env_nonstat.csv', sep='\t')
+# # xo = np.array(data)[1:2595,0]
+# X = pd.read_csv('datatest.csv',sep=";", header=None)
+# X = np.array(X)
+# Gamma = 2
 # Prmk = 0
 # nkern = 1
-# gamma = 0.2
-# eta = 0.03
-# nu = 0.1
-# kard = 3
-# Xnew = X[1,:].reshape(-1,1)
-# WK_Sim =[[0,0.2]]
-
+# gamma = 2
+# eta = 0.2
+# nu = 0.3
+# kard = 50
+# ThSim = 1
+# X1 = X[0,:].reshape(1,-1)
+# X2 = X[1,:].reshape(1,-1)
 # KM0 = []
-# KM = Kernel_Machine_Initialisation(Xnew,gamma,nu,eta,KM0)
-# p = Online_Learning_Kernel(Xnew, WK_Sim,gamma,nu,eta,kard,KM)
+# KM = Kernel_Machine_Initialisation(X1,gamma,nu,eta,KM0)
+# WK_Sim = Kernel_Decision_Function (X2, ThSim, gamma,KM)#[[0,0.2]]
+
+
+# print(KM)
+# p = Online_Learning_Kernel(X2, WK_Sim,gamma,nu,eta,kard,KM)
 # print(p)

@@ -8,13 +8,15 @@ from sklearn.datasets import make_blobs
 def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
     
 
-    #gamma=1/2*np.var(Xt) #????? en parametres ou bien ??
+   
 
 ############## Les entrées ################################
-    # Xt : l'observation à l'instant t
-    # kern : la fonction noyau pour l'évaluation de similarité 'nom_noyau'
-    # gamma : paramétre du noyau de type RBF
-    # meth : méthode d'évaluation de la similarité à utiliser, on le fixe par défaut à 2. Si l'utilsateur ne le fournit pas on le consdére par défaut  à 2
+    """ Xt : l'observation à l'instant t
+     kern : la fonction noyau pour l'évaluation de similarité 'nom_noyau'
+     gamma : paramétre du noyau de type RBF
+     meth : méthode d'évaluation de la similarité à utiliser, on le fixe par défaut à 2.
+    Si l'utilsateur ne le fournit pas on le consdére par défaut  à 2"""
+    
 ############# Les sorties ###############################
 
 # dsk :la valeur de simularité entre l'observation XT et le noyau kern
@@ -24,25 +26,25 @@ def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
     # On considére kern comme un dictionnaire
 
     Rho = kern["Rho"]
-    # print(Rho)
+    
     Wgh = kern["wgh"] #les poids 
 
-   # print('Wgh=',Wgh.shape)
    
-    Xsv=kern["Xsv"] # les vecteurs de support
+   
+    Xsv = kern["Xsv"] # les vecteurs de support
    
    
     # traitement par défaut
  
     Xmat = (np.ones((Wgh.shape[0], 1))).dot(Xt) 
-    # print(Xsv.shape)
+   
     dist = np.diag((Xmat- Xsv).dot((Xmat - Xsv).T))
     
     Ksvt = np.exp(-gamma * dist)
 
-    fval=np.dot(Wgh.T, Ksvt)-Rho # (valeur de la fonction noyau)
+    fval = np.dot(Wgh.T, Ksvt)-Rho # (valeur de la fonction noyau)
     
-    # print(np.dot(Wgh.T, Ksvt))
+    
    
     if meth == 1:
         dsk = fval
@@ -50,6 +52,7 @@ def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
         Xmat = (np.ones((Wgh.shape[0], 1))).dot(Xt) 
         
         dist = np.diag((Xmat- Xsv).dot((Xmat - Xsv).T))
+        
         Ksvt = np.exp(-gamma * dist)
         
         if fval >= 0:
@@ -62,9 +65,9 @@ def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
     else:
         KGrm = []
         for i in range(Wgh.shape[0]+1):
-            #print(Xsv[i,:].shape)
+            
             Xmat = (np.ones((Wgh.shape[0], 1))).dot(Xt)
-            #np.tile(Xsv[i, :], (Wgh.shape[1], 1))
+            
             dist = np.diag((Xmat- Xsv).dot((Xmat - Xsv).T))
             KGrm = np.column_stack((KGrm, dist))
         
@@ -86,18 +89,22 @@ def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
 # X =np.insert(np.array(data)[1:2595,0:2],1,xo,axis=1)
 # X1 = X[1,:].reshape(1,-1)
 # X2 = X[3:20,:].reshape(1,-1)
+# X = pd.read_csv('datatest.csv',sep=";", header=None)
+# X = np.array(X)
+# X0 = X[0,:].reshape(1,-1)
+# X2 = X[1,:].reshape(1,-1)
 # Gamma = 0.1
 # nu = 0.5
 # eta = 2
 
 # KM0 = []
-# kern=Kernel_Machine_Initialisation(X1 , Gamma, nu, eta,KM0)[0]
-# #print(kern)
+# kern = Kernel_Machine_Initialisation(X0 , Gamma, nu, eta,KM0)[0]
+# print(kern)
 
 # meth=2
 # gamma=0.2
-# v = Kernel_Similarity_Mesure(X[3,:].reshape(1,-1),kern,gamma,meth)
+# v = Kernel_Similarity_Mesure(X2,kern,gamma,meth)
 # print(v)
-# # for i in range(100) :
-# #     v = Kernel_Similarity_Mesure(X[i,:].reshape(1,-1),kern,gamma,meth)
-# #     print(v)
+# for i in range(5) :
+#     v = Kernel_Similarity_Mesure(X[i,:].reshape(1,-1),kern,gamma,meth)
+#     print(v)
