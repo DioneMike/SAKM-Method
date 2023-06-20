@@ -16,7 +16,7 @@ def Eliminate_Noise_Clusters(Nc,KM):
             KM = np.delete(KM, m)
 
         else :
-            Xcl = np.append(Xcl,KM[m]["data"])
+            Xcl = np.append(Xcl,KM[m]["data"],axis=0)
 
         m = m + 1
     return Xcl,Xrj
