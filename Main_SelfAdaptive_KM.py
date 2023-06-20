@@ -22,11 +22,11 @@ import matplotlib.pyplot as plt
 # digits = load_digits()
 # X = digits.data
 # # plt.plot(,,X[:,2])
-data = pd.read_csv('datatest.csv',sep=";", header=None)
+data = pd.read_csv('datatst.csv',sep=",", header=None)
 X = np.array(data)
 x = X[:,0]
 y = X[:,1]
-# z = X[:,2]
+z = X[:,2]
 
 df = pd.DataFrame(data)
 
@@ -43,7 +43,7 @@ data=np.array(X)
 # Afficher un graphique 3D
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(X[:, 0], X[:, 1],X[:, 2], c='k', marker='x')
+ax.scatter(y,x,z, c='k', marker='x')
 # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
 plt.show()
 
@@ -139,25 +139,25 @@ plt.plot(R, 'r')
 plt.show()
 
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-X = pd.read_csv('datatest.csv',sep=";", header=None)
-X = np.array(X)
-x = X[:,0]
-y = X[:,1]
-# z = X[:,2]
+# # X = pd.read_csv('datatest.csv',sep=";", header=None)
+# # X = np.array(X)
+# xk = KM[0]["data"][:,0]
+# yk = KM[0]["data"][:,1]
+# zk = KM[0]["data"][:,2]
 
-fig = plt.figure(figsize = (10,10))
-ax = plt.axes(projection='3d')
-ax.grid()
+# fig = plt.figure(figsize = (10,10))
+# ax = plt.axes(projection='3d')
+# ax.grid()
 
-ax.scatter(x, y,c = 'r', s = 50)
-ax.set_title('2D Scatter Plot')
+# ax.scatter(yk,xk,zk,c = 'r', s = 50)
+# ax.set_title('2D Scatter Plot')
 
-# Set axes label
-ax.set_xlabel('x', labelpad=20)
-ax.set_ylabel('y', labelpad=20)
-# ax.set_zlabel('z', labelpad=20)
+# # Set axes label
+# ax.set_xlabel('x', labelpad=20)
+# ax.set_ylabel('y', labelpad=20)
+# # ax.set_zlabel('z', labelpad=20)
 
-plt.show()
+# plt.show()
 
