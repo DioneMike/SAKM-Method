@@ -101,14 +101,14 @@ while Data.shape[0] > 0:
     Robust_Kernel_Machine(Process, WK_Sim, Xnew, gamma, nu, eta, kard,KM)  # À implémenter
 
     # Élimination des clusters de noyau : Élimination du bruit
-    """ if (k == i or k == Ndat) and len(KM) > 0:
+    if (k == i or k == Ndat) and len(KM) > 0:
         Xcl, Xrj = Eliminate_Noise_Clusters(Nc,KM)  # élimination de bruits
         
         i += T
     else:
         
         
-        Xcl = np.append(Xcl, Xnew, axis=0) #un soucis de code à ce niveau"""
+        Xcl = np.append(Xcl, Xnew, axis=0) 
         
         
 
