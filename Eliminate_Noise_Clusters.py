@@ -2,23 +2,24 @@ import numpy as np
 
 from Kernel_Machine_Initialisation import Kernel_Machine_Initialisation
 
-def Eliminate_Noise_Clusters(Nc,KM):
-   
+def Eliminate_Noise_Clusters(Nc):
+    global KM
     Xrj = np.empty((0,KM[0]["data"].shape[1]))
     Xcl = np.empty((0,KM[0]["data"].shape[1]))
     m = 0
 
     while m < len(KM):
         
-        if KM[m]["data"].shape[0] <= Nc :
+        if KM[m]["data"].shape[0] < Nc :
             Xrj = np.append(Xrj,KM[m]["data"])
             # KM[m] = []
-            KM = np.delete(KM, m)
-
+            KM = np.delete(KM,m)
+            
         else :
             Xcl = np.append(Xcl,KM[m]["data"],axis=0)
 
         m = m + 1
+    # print(KM)
     return Xcl,Xrj
 
 
@@ -41,5 +42,5 @@ def Eliminate_Noise_Clusters(Nc,KM):
 # KM = Kernel_Machine_Initialisation(X0, gamma, nu, eta,[])
 # # KM = Kernel_Machine_Initialisation(Xnew, gamma, nu, eta,KM1)
 # Nc = 10
-# e = Eliminate_Noise_Clusters(Nc,KM)
+# e = Eliminate_Noise_Clusters(Nc)
 # print(e)

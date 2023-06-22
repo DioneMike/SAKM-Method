@@ -22,43 +22,45 @@ def Robust_Kernel_Machine(Process,WK_Sim,Xnew,gamma,nu,eta,kard,KM):
     if Process == 1 :
         return
     
+    else:
     
-    
-    nkern = len(WK_Sim)
-    idkern = []
-    
-    
-    for v in WK_Sim :
+        nkern = len(WK_Sim)
+        # idkern = []
         
-        id = v[0]
-        idkern.append(id)
-    
-    Wnmk = np.sort(idkern)
-    
-    
-    # KERN = []
-    
-  
-    
-    # KernMerg = Kernel_Merging_Function(KM[Wnmk],nkern, Wnmk[0],gamma,nu,eta,kard,KM)
- 
-    KernMergUpdat = KernelUpdate_NormTruncSGradient(WK_Sim,Xnew,gamma,nu,eta,kard,KM)
-
-    #------------------------ Mis à jour du noyau----------------------------------#
-    n = len(KM)-nkern + 1
-    
-    KM = np.resize(KM, n) 
-    
-    KM[int(Wnmk[0])] = KernMergUpdat
-    
-    
-    for i in Wnmk[1:] :
-        i = int(i)
-        if len(KM) > i:
-            KM =np.delete(KM,i)
         
-        else :
-            KM[int(Wnmk[0])] = KernMergUpdat
+        # for v in WK_Sim :
+            
+        #     id = v[0]
+        #     idkern.append(id)
+        
+        win = np.array(WK_Sim)
+        
+        Wnmk = np.sort(win[:,0]) #np.sort(idkern)
+        print(Wnmk)
+        
+        # KERN = []
+        
+      
+        
+        KernMerg = Kernel_Merging_Function(KM[Wnmk],nkern, Wnmk[0],gamma,nu,eta,kard,KM)
+     
+        KernMergUpdat = KernelUpdate_NormTruncSGradient(WK_Sim,Xnew,gamma,nu,eta,kard,KM)
+    
+        #------------------------ Mis à jour du noyau----------------------------------#
+        n = len(KM)-nkern + 1
+        
+        KM = np.resize(KM, n) 
+        
+        KM[int(Wnmk[0])] = KernMergUpdat
+        
+        
+        for i in Wnmk[1:] :
+            i = int(i)
+            if len(KM) > i:
+                KM =np.delete(KM,i)
+            
+            else :
+                KM[int(Wnmk[0])] = KernMergUpdat
 
 
 # X = pd.read_csv('datatest.csv',sep=";", header=None)
@@ -81,7 +83,7 @@ def Robust_Kernel_Machine(Process,WK_Sim,Xnew,gamma,nu,eta,kard,KM):
 # nu = 0.5
 # kard = 50
 # ThSim = 0.02
-# Process = 1
+# Process = 0
 
 # from Kernel_Machine_Initialisation import Kernel_Machine_Initialisation
 # # from Kernel_Decision_Function import Kernel_Decision_Function
@@ -90,7 +92,7 @@ def Robust_Kernel_Machine(Process,WK_Sim,Xnew,gamma,nu,eta,kard,KM):
 # KM1 = Kernel_Machine_Initialisation(X[0,:].reshape(1,-1), gamma, nu, eta,KM0)
 
 # KM = Kernel_Machine_Initialisation(X[1,:].reshape(1,-1), gamma, nu, eta,KM1)
-
+# KM = Kernel_Machine_Initialisation(X[1,:].reshape(1,-1), gamma, nu, eta,KM1)
 # from Kernel_Decision_Function import Kernel_Decision_Function
 # WK_Sim = Kernel_Decision_Function(X[1,:].reshape(1,-1) ,ThSim, gamma,KM)
 # print(WK_Sim)

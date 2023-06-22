@@ -6,7 +6,7 @@ import math
 
 def KernelUpdate_NormTruncSGradient(WinKern,Xnew,Gamma,nu,eta,Kard,KM):
 
-   
+    # global KM
     
     if len(KM) == 0 :
         print("Il n'y a aucun noyau à mettre à jour !")

@@ -41,11 +41,11 @@ data=np.array(X)
 # X = np.delete(X, 2,axis = 1)
 
 # Afficher un graphique 3D
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(y,x,z, c='k', marker='x')
-# ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
-plt.show()
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.scatter(y,x,z, c='k', marker='x')
+# # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
+# plt.show()
 
 # Mesure de Performances en dynamique
 global Rcum
@@ -60,7 +60,7 @@ gamma = 2
 nu = 0.3
 eta = 0.2
 kard = 50
-ThSim = 1
+ThSim = 0.55
 Nc = 10
 T = 30
 
@@ -75,6 +75,7 @@ Data = X.copy()
 i = T
 
 # Initialisation de Kernel Machine
+global KM
 KM = Kernel_Machine_Initialisation(X[0,:].reshape(1,-1), gamma, nu, eta,[])
 
 
@@ -82,7 +83,7 @@ KM = Kernel_Machine_Initialisation(X[0,:].reshape(1,-1), gamma, nu, eta,[])
 while Data.shape[0] > 0:
     # Acquisition de données en ligne
     Xnew = Data[0, :].reshape(1, -1)
-    
+    # print(k,Xnew)
     # Data = Data[1:, :].reshape(1, -1)
     
     Data = np.delete(Data, 0, axis=0)
@@ -92,7 +93,7 @@ while Data.shape[0] > 0:
     
    
     # Apprentissage en ligne avec Kernel Machine : Initialisation du noyau et adaptation
-    Process = Online_Learning_Kernel(Xnew, WK_Sim, gamma, nu, eta, kard,KM)  # À implémenter
+    Process = Online_Learning_Kernel(Xnew, WK_Sim, gamma, nu, eta, kard)  # À implémenter
 
    
     
@@ -124,19 +125,19 @@ while Data.shape[0] > 0:
     k += 1
 
 # Tracé de Rcum
-plt.figure()
-plt.plot(Rcum, 'r')
-plt.show()
+# plt.figure()
+# plt.plot(Rcum, 'r')
+# plt.show()
 
 
-R =[(1/(len(KM) * Ndat))* r for r in Rcum]
+# R =[(1/(len(KM) * Ndat))* r for r in Rcum]
 
-# Tracé de la fonction objective
-plt.figure()
-plt.title('Fonction objective : Erreur moyenne dynamique')
-plt.axis([0, 2000, 0, 1])
-plt.plot(R, 'r')
-plt.show()
+# # Tracé de la fonction objective
+# plt.figure()
+# plt.title('Fonction objective : Erreur moyenne dynamique')
+# plt.axis([0, 2000, 0, 1])
+# plt.plot(R, 'r')
+# plt.show()
 
 
 # import matplotlib.pyplot as plt
