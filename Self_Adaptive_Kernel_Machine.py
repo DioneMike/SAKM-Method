@@ -27,6 +27,7 @@ def Kernel_Machine_Initialisation(Xini, Gamma, nu, eta):
     Rho = eta*(1-nu)
     idsv = 0
     data = Xini
+    
     kern={"wgh":wgh, "Xsv":Xini, "Rho":Rho, "idsv":idsv, "data":data}
    
     if len(KM) == 0 : 
@@ -62,7 +63,7 @@ def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
 ############# Les sorties ###############################
 
 # dsk :la valeur de simularité entre l'observation XT et le noyau kern
-# fval : la valeur prise par la fonction noyau (? est elle un vecteur ou un scalaire)
+# fval : la valeur prise par la fonction noyau 
 
     # global KM
     # On considére kern comme un dictionnaire
@@ -90,6 +91,8 @@ def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
    
     if meth == 1:
         dsk = fval
+        
+        
     elif meth == 2:
         Xmat = (np.ones((Wgh.shape[0], 1))).dot(Xt) 
         
@@ -98,10 +101,10 @@ def Kernel_Similarity_Mesure(Xt,kern,gamma,meth=2):
         Ksvt = np.exp(-gamma * dist)
         
         if fval >= 0:
-            dsk = 0
+            dsk = 0 # la donnée est dans la même classe que le Xsv
             
         else:
-            dsk = np.min(np.sqrt(1 - Ksvt))
+            dsk = np.min(np.sqrt(1 - Ksvt)) # la distance entre la donnée et le Xsv qui est plus proche
             
             
     else:
@@ -457,21 +460,7 @@ z = X[:,2]
 df = pd.DataFrame(data)
 
 data=np.array(X)
-# data= data[0:2595,0:2]#sio.loadmat(r'D:\Travaux\PhD_PROJECT\IMPLEMENTATIONS_CODES\DEVELOPPEMENTS\ADEME\ADEME Experiments\ADEME_Static_FN-EC-RE-FI_14-12-04.mat')
-#X = data
-#print(type(X))
 
-#X = X[:-131, :]  # Supprimer les 130 dernières lignes de X
-#print(X[:,0].shape)
-
-# X = np.delete(X, 2,axis = 1)
-
-# Afficher un graphique 3D
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-# ax.scatter(y,x,z, c='k', marker='x')
-# # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
-# plt.show()
 
 # Mesure de Performances en dynamique
 global Rcum
@@ -487,7 +476,7 @@ nu = 0.3
 eta = 0.2
 kard = 50
 ThSim = 1
-Nc = 10
+Nc = 1
 T = 30
 
 # Paramètres pour le graphique
@@ -497,13 +486,13 @@ Step = 10
 k = 1
 Ndat = X.shape[0]
 Axs = [0, 1]
-Data = X.copy()
-# Data = Data[0:100,:]
+# Data = X.copy()
+Data = Data = X[498:502,:]
 i = T
 
 # Initialisation de Kernel Machine
 
-KM = Kernel_Machine_Initialisation(X[0,:].reshape(1,-1), gamma, nu, eta)
+KM = []#Kernel_Machine_Initialisation(X[0,:].reshape(1,-1), gamma, nu, eta)
 
 
 
@@ -531,7 +520,7 @@ while Data.size > 0 :
     # Élimination des clusters de noyau : Élimination du bruit
     if (k == i or k == Ndat) and len(KM) > 0:
         Xcl, Xrj = Eliminate_Noise_Clusters(Nc)  # élimination de bruits
-        Data = Data
+        
         i += T
     else:
         
@@ -551,6 +540,6 @@ while Data.size > 0 :
     
     k += 1
 
-print(len(KM))
+
 
 
