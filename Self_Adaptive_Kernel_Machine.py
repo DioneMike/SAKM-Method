@@ -174,7 +174,7 @@ def KernelUpdate_NormTruncSGradient(WinKern,Xnew,Gamma,nu,eta,Kard):
     
         #---------------------------------------- Troncature ------------------------------------------------------------------#
     
-        if WKern["Xsv"].shape[0] == Kard :
+        if WKern["Xsv"].shape[0] >= Kard :
             
            WKern["data"]= np.delete(WKern["data"], 0, axis=0)
            
@@ -190,7 +190,7 @@ def KernelUpdate_NormTruncSGradient(WinKern,Xnew,Gamma,nu,eta,Kard):
           
         #----------------------------------------Condition suplémentaire: sum(alpha_i) = 1 et Rho = f(Xsvi)  --------------------#
     
-        ts =  max(math.floor(WKern["wgh"].shape[0] / 2), 0)-1
+        ts =  max(math.floor(WKern["wgh"].shape[0] / 2), 0)
        
         WKern["wgh"] = WKern["wgh"]/np.sum(WKern["wgh"]) # normalisation des poids alpha
         
@@ -263,7 +263,7 @@ def Kernel_Decision_Function(Xnew, ThSim, gamma):
 
     global Rcum # Risque cumulé
     global KM
-    Rcum = [0]
+    
     
     
     
@@ -289,7 +289,7 @@ def Kernel_Decision_Function(Xnew, ThSim, gamma):
                 
                 new_row = np.array([int(m), fval])
                
-                WinK_SimK = np.append(WinK_SimK, [new_row], axis=0) #probléme quand je mets plusieurs noyaux
+                WinK_SimK = np.append(WinK_SimK, [new_row], axis=0) 
                 
             else :
                 
@@ -316,21 +316,21 @@ def Kernel_Decision_Function(Xnew, ThSim, gamma):
 #kernel online learning function 
 def Online_Learning_Kernel(Xnew, WK_Sim,gamma,nu,eta,kard):
 
-    # >>INPUT
-#     Xnew : nouvelle Observation acquise à l'instant 
-#     WK_Sim : Noyau gagnant et Valeur de Similarity correspondante avec l'observation XT
-#     gamma: Parametre du RBF, correspond à 1/2v² où v² est la variance des données
-#     nu: Paramètre du Slack-error (admise), Règlage du nombre de SV et non-SV
-#     eta: ratio d'apprentissage du processus d'Stochastic_Gradient
-#     kernel (default) = 'gaussian' : Choix fixé du noyau gaussian RbF
-#     kard :  Cardinalité max des noyaux
-# >>OUTPUT
-#     KM Kernel machine -> Structure modifié (variable global)
-#     Process: etat 1 si la donnée est traité 0 si Ambiguité (Mergin)
+    """ 
+    >>Entrées
+    Xnew : nouvelle Observation acquise à l'instant 
+    WK_Sim : Noyau gagnant et Valeur de Similarity correspondante avec l'observation XT
+    gamma: Parametre du RBF, correspond à 1/2v² où v² est la variance des données
+    nu: Paramètre du Slack-error (admise), Règlage du nombre de SV et non-SV
+    eta: ratio d'apprentissage du processus d'Stochastic_Gradient
+    kernel (default) = 'gaussian' : Choix fixé du noyau gaussian RbF
+    kard :  Cardinalité max des noyaux
+    
+    >>Sorties
+    KM Kernel machine -> Structure modifié (variable global)
+    Process: etat 1 si la donnée est traité 0 si Ambiguité (Mergin) """
 
     global KM
-    
-
     WK_Sim = np.array(WK_Sim)
     if len(WK_Sim)== 0 :
 
@@ -468,15 +468,16 @@ Rcum = [0]
 
 global KM
 KM = []
-# print(X.shape)
+
+
 
 Xcl = np.empty((0,X.shape[1]))
 gamma = 2
 nu = 0.3
 eta = 0.2
-kard = 50
-ThSim = 1
-Nc = 1
+kard =120
+ThSim = 0.99
+Nc = 10
 T = 30
 
 # Paramètres pour le graphique
@@ -487,12 +488,12 @@ k = 1
 Ndat = X.shape[0]
 Axs = [0, 1]
 # Data = X.copy()
-Data = Data = X[498:502,:]
+Data = Data = X#[498:502,:]
 i = T
 
 # Initialisation de Kernel Machine
 
-KM = []#Kernel_Machine_Initialisation(X[0,:].reshape(1,-1), gamma, nu, eta)
+KM = [] # l'espace des classe est initialement vide 
 
 
 
@@ -530,7 +531,7 @@ while Data.size > 0 :
         
 
 
-    # Affichage des clusters de noyau (J'ai des soucis de code pour cette partie)
+    # Affichage des clusters de noyau 
     # if k == IT or k == Ndat:
     #     Plotting_Kernel_Clusters(Xcl, KM, gamma, echAxes, Axs)  # À implémenter
     #     plt.pause(0.2)
@@ -540,6 +541,19 @@ while Data.size > 0 :
     
     k += 1
 
+# Tracé de Rcum
+plt.figure()
+plt.plot(Rcum, 'r')
+plt.show()
 
+
+R =[(-1/(len(KM) * Ndat))* r for r in Rcum]
+
+# Tracé de la fonction objective
+plt.figure()
+plt.title('Fonction objective : Erreur moyenne dynamique')
+# plt.axis([0, 2000, 0, 1])
+plt.plot(R, 'r')
+plt.show()
 
 
