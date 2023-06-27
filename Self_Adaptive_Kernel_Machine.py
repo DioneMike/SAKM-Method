@@ -451,13 +451,15 @@ import matplotlib.pyplot as plt
 # digits = load_digits()
 # X = digits.data
 # # plt.plot(,,X[:,2])
-data = pd.read_csv('datatst.csv',sep=",", header=None)
-X = np.array(data)
-x = X[:,0]
-y = X[:,1]
-z = X[:,2]
 
-df = pd.DataFrame(data)
+data = pd.read_csv('datatst.csv',sep=",", header=None) #les données de test
+
+# data = pd.read_csv('Env_nonstat.csv',sep=",", header=None) # les données non stationnaires
+X = np.array(data) # tableau à deux dimensions
+# xo = X[0:2596,0]
+# X =np.insert(X,2,xo,axis=1)[:,0:3] # on rajoute une troisiéme dimension.
+
+
 
 data=np.array(X)
 
@@ -467,7 +469,7 @@ global Rcum
 Rcum = [0]
 
 global KM
-KM = []
+KM = [] #l'espace des classe est initialement vide 
 
 
 
@@ -491,11 +493,22 @@ Axs = [0, 1]
 Data = Data = X#[498:502,:]
 i = T
 
-# Initialisation de Kernel Machine
+# Représentation graphique des observations
 
-KM = [] # l'espace des classe est initialement vide 
+x = X[:,0]
+y = X[:,1]
+z = X[:,2]
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(y, x,z, c='k', marker='x')
+# ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
+plt.show()
 
 
+
+
+# Apprentissage séquentiel 
 
 while Data.size > 0 :
     # Acquisition de données en ligne
@@ -508,14 +521,10 @@ while Data.size > 0 :
     # Fonction de décision pour Kernel Machine
     WK_Sim = Kernel_Decision_Function(Xnew, ThSim, gamma)  # À implémenter
     
-   
     # Apprentissage en ligne avec Kernel Machine : Initialisation du noyau et adaptation
     Process = Online_Learning_Kernel(Xnew, WK_Sim, gamma, nu, eta, kard)  # À implémenter
 
-   
-    
     # Machine à noyau robuste : Fusion du noyau
-    
     Robust_Kernel_Machine(Process, WK_Sim, Xnew, gamma, nu, eta, kard)  # À implémenter
 
     # Élimination des clusters de noyau : Élimination du bruit
@@ -531,29 +540,46 @@ while Data.size > 0 :
         
 
 
-    # Affichage des clusters de noyau 
-    # if k == IT or k == Ndat:
-    #     Plotting_Kernel_Clusters(Xcl, KM, gamma, echAxes, Axs)  # À implémenter
-    #     plt.pause(0.2)
-    #     Plotting_Kernel_Function(Xcl, KM, gamma, echAxes, Axs)  # À implémenter
-    #     IT = k + Step
-    #     plt.pause(0.2)
+   # partie réservée pour les fonctions d'affichages des clusters
     
     k += 1
 
 # Tracé de Rcum
-plt.figure()
-plt.plot(Rcum, 'r')
-plt.show()
+# plt.figure()
+# plt.plot(Rcum, 'r')
+# plt.show()
 
 
-R =[(-1/(len(KM) * Ndat))* r for r in Rcum]
+# R =[(-1/(len(KM) * Ndat))* r for r in Rcum]
 
-# Tracé de la fonction objective
-plt.figure()
-plt.title('Fonction objective : Erreur moyenne dynamique')
-# plt.axis([0, 2000, 0, 1])
-plt.plot(R, 'r')
-plt.show()
+# # Tracé de la fonction objective
+# plt.figure()
+# plt.title('Fonction objective : Erreur moyenne dynamique')
+# # plt.axis([0, 2000, 0, 1])
+# plt.plot(R, 'r')
+# plt.show()
 
 
+#----------------------Partie vérification graphique--------------------#
+
+# On vérifie graphiquement si nos deux classes données par l'algorithme correspondent aux deux classes observées
+# x1 = KM[0]["data"][:,0]
+# y1 = KM[0]["data"][:,1]
+# z1 = KM[0]["data"][:,2]
+
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.scatter(y1, x1,z1, c='k', marker='x')
+# # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
+# plt.show()
+
+
+# x2 = KM[1]["data"][:,0]
+# y2 = KM[1]["data"][:,1]
+# z2 = KM[1]["data"][:,2]
+
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.scatter(y2, x2,z2, c='k', marker='x')
+# # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
+# plt.show()
