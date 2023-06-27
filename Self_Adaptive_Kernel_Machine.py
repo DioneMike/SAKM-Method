@@ -7,6 +7,8 @@ Created on Thu Jun 22 11:51:52 2023
 import numpy as np
 import pandas as pd
 import math 
+import plotly.io as pio
+import plotly.graph_objs as go
 from Kernel_Machine_Initialisation import Kernel_Machine_Initialisation 
 
 def Kernel_Machine_Initialisation(Xini, Gamma, nu, eta):
@@ -325,10 +327,10 @@ def Online_Learning_Kernel(Xnew, WK_Sim,gamma,nu,eta,kard):
     eta: ratio d'apprentissage du processus d'Stochastic_Gradient
     kernel (default) = 'gaussian' : Choix fixé du noyau gaussian RbF
     kard :  Cardinalité max des noyaux
-    
     >>Sorties
     KM Kernel machine -> Structure modifié (variable global)
-    Process: etat 1 si la donnée est traité 0 si Ambiguité (Mergin) """
+    Process: etat 1 si la donnée est traité 0 si Ambiguité (Mergin)
+    """
 
     global KM
     WK_Sim = np.array(WK_Sim)
@@ -499,12 +501,26 @@ x = X[:,0]
 y = X[:,1]
 z = X[:,2]
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(y, x,z, c='k', marker='x')
-# ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
-plt.show()
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.scatter(y, x,z, c='k', marker='x')
+# # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
+# plt.show()
 
+
+def plot_data():
+    # pio.renderers.default = 'svg' # To plot in default 
+    pio.renderers.default = 'browser' #To plot in browser  
+    #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
+    fig = go.Figure() #Create empty figure
+    #add_trace method to add plots to the figure
+    #create a line plot with 'Close' as legend, date column as x-axis and Close column as y-axis. 
+    fig.add_trace(go.Scatter3d(x=x, y=y, z=z, 
+                               mode='markers', name='data', marker=dict(size=2)))
+    fig.update_layout(showlegend = True)
+    return fig.show()
+
+plot_data() #Show plot
 
 
 
@@ -563,9 +579,13 @@ while Data.size > 0 :
 #----------------------Partie vérification graphique--------------------#
 
 # On vérifie graphiquement si nos deux classes données par l'algorithme correspondent aux deux classes observées
-# x1 = KM[0]["data"][:,0]
-# y1 = KM[0]["data"][:,1]
-# z1 = KM[0]["data"][:,2]
+# data
+x1 = KM[0]["data"][:,0]
+y1 = KM[0]["data"][:,1]
+z1 = KM[0]["data"][:,2]
+
+# Xsv
+
 
 # fig = plt.figure()
 # ax = fig.add_subplot(111, projection='3d')
@@ -574,12 +594,30 @@ while Data.size > 0 :
 # plt.show()
 
 
-# x2 = KM[1]["data"][:,0]
-# y2 = KM[1]["data"][:,1]
-# z2 = KM[1]["data"][:,2]
+x2 = KM[1]["data"][:,0]
+y2 = KM[1]["data"][:,1]
+z2 = KM[1]["data"][:,2]
 
 # fig = plt.figure()
 # ax = fig.add_subplot(111, projection='3d')
 # ax.scatter(y2, x2,z2, c='k', marker='x')
 # # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
 # plt.show()
+
+def plot_cluster():
+    # pio.renderers.default = 'svg' #To plot in default 
+    pio.renderers.default = 'browser' #To plot in browser  
+    #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
+    fig = go.Figure() #Create empty figure
+    #add_trace method to add plots to the figure
+    #create a line plot with 'Close' as legend, date column as x-axis and Close column as y-axis. 
+    fig.add_trace(go.Scatter3d(x = x1, y = y1, z = z1, 
+                               mode = 'markers', name = 'C1', marker=dict(size=2)))
+    fig.add_trace(go.Scatter3d(x = x2, y = y2, z = z2, 
+                               mode = 'markers', name = 'C2', marker=dict(size=2)))
+    fig.update_layout(showlegend = True)
+    
+    
+    return fig.show()
+
+plot_cluster() #Show plot
