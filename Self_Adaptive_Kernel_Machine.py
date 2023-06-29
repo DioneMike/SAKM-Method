@@ -9,7 +9,7 @@ import pandas as pd
 import math 
 import plotly.io as pio
 import plotly.graph_objs as go
-from Kernel_Machine_Initialisation import Kernel_Machine_Initialisation 
+
 
 def Kernel_Machine_Initialisation(Xini, Gamma, nu, eta):
 
@@ -448,15 +448,15 @@ def Eliminate_Noise_Clusters(Nc):
 
 # main  SAKM
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 # from sklearn.datasets import load_digits
 # digits = load_digits()
 # X = digits.data
 # # plt.plot(,,X[:,2])
 
-data = pd.read_csv('datatst.csv',sep=",", header=None) #les données de test
+data = pd.read_csv('data/datatst.csv',sep=",", header=None) #les données de test
 
-# data = pd.read_csv('Env_nonstat.csv',sep=",", header=None) # les données non stationnaires
+# data = pd.read_csv('data/Env_nonstat.csv',sep=",", header=None) # les données non stationnaires
 X = np.array(data) # tableau à deux dimensions
 # xo = X[0:2596,0]
 # X =np.insert(X,2,xo,axis=1)[:,0:3] # on rajoute une troisiéme dimension.
