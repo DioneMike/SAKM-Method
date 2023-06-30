@@ -449,10 +449,7 @@ def Eliminate_Noise_Clusters(Nc):
 # main  SAKM
 
 # import matplotlib.pyplot as plt
-# from sklearn.datasets import load_digits
-# digits = load_digits()
-# X = digits.data
-# # plt.plot(,,X[:,2])
+
 
 data = pd.read_csv('data/evolingdata.csv',sep="\t", header=None) #les données de test
 data.drop(2,axis=1,inplace=True)
@@ -501,11 +498,7 @@ x = X[:,0]
 y = X[:,1]
 # z = X[:,2]
 
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-# ax.scatter(y, x,z, c='k', marker='x')
-# # ax.scatter(X[:, 0], X[:, 1], c='k', marker='x')
-# plt.show()
+
 
 #---------------------------Pour des données 3D --------------------------#
 # def plot_data():
@@ -594,47 +587,23 @@ while Data.size > 0 :
 
 #----------------------Partie vérification graphique--------------------#
 
-# On vérifie graphiquement si nos deux classes données par l'algorithme correspondent aux deux classes observées
-# data C1
-x1 = KM[0]["data"][:,0]
-y1 = KM[0]["data"][:,1]
-# z1 = KM[0]["data"][:,2]
-
-# Xsv1
-xsv1 = KM[0]["Xsv"][:,0]
-ysv1 = KM[0]["Xsv"][:,1]
-# z1 = KM[0]["Xsv"][:,2]
+# On vérifie graphiquement si nos  classes données par l'algorithme correspondent aux  classes observées
 
 
-# data C2
-x2 = KM[1]["data"][:,0]
-y2 = KM[1]["data"][:,1]
-
-# z2 = KM[1]["data"][:,2]
-xsv2 = KM[1]["Xsv"][:,0]
-ysv2 = KM[1]["Xsv"][:,1]
-# zsv1 = KM[1]["Xsv"][:,2]
-
-
-
-#------------------------------------Pour les données 3D -----------------------#
+# ------------------------------------Pour les données 3D -----------------------#
 # def plot_cluster():
 #     # pio.renderers.default = 'svg' #To plot in default 
 #     pio.renderers.default = 'browser' #To plot in browser  
 #     #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
 #     fig = go.Figure() #Create empty figure
 #     #add_trace method to add plots to the figure
-#     #create a line plot with 'Close' as legend, date column as x-axis and Close column as y-axis. 
-#     fig.add_trace(go.Scatter3d(x = x1, y = y1, z = z1, 
-#                                mode = 'markers', name = 'C1', marker=dict(size=2)))
-#     fig.add_trace(go.Scatter3d(x = x2, y = y2, z = z2, 
-#                                mode = 'markers', name = 'C2', marker=dict(size=2)))
-#     fig.add_trace(go.Scatter3d(x = xsv1, y = ysv1, z = zsv1, 
-#                                mode = 'markers', name = 'Xsv1', marker=dict(size=3,color='yellow')))
-#     fig.add_trace(go.Scatter3d(x = x2, y = y2, z = z2, 
-#                                mode = 'markers', name = 'C2', marker=dict(size=2,color='green'))))
-#     ig.add_trace(go.Scatter3d(x = xsv2, y = ysv2, z = zsv2, 
-#                                mode = 'markers', name = 'Xsv2', marker=dict(size=3,color='red')))
+#     for i in range(len(KM)):
+          # j = str(i+1)
+#         fig.add_trace(go.Scatter3d(x = KM[i]["data"][:,0], y = KM[i]["data"][:,1], z = KM[i]["data"][:,2], 
+#                                 mode = 'markers', name = 'C'+j, marker=dict(size=2)))
+#         fig.add_trace(go.Scatter3d(x = KM[i]["Xsv"][:,0], y = KM[i]["Xsv"][:,1], z = KM[i]["Xsv"][:,2], 
+#                                 mode = 'markers', name = 'XSV'+j, marker=dict(size=3)))
+
 #     fig.update_layout(showlegend = True)
     
     
@@ -647,20 +616,18 @@ ysv2 = KM[1]["Xsv"][:,1]
 def plot_cluster():
     # pio.renderers.default = 'svg' #To plot in default 
     pio.renderers.default = 'browser' #To plot in browser  
-    #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
+     
     fig = go.Figure() #Create empty figure
     #add_trace method to add plots to the figure
-    #create a line plot with 'Close' as legend, date column as x-axis and Close column as y-axis. 
-    fig.add_trace(go.Scatter(x = x1, y = y1,  
-                               mode = 'markers', name = 'C1', marker=dict(size=2)))
-    fig.add_trace(go.Scatter(x = x2, y = y2,  
-                               mode = 'markers', name = 'C2', marker=dict(size=2)))
-    fig.add_trace(go.Scatter(x = xsv1, y = ysv1,  
-                               mode = 'markers', name = 'Xsv1', marker=dict(size=3,color='yellow')))
-    fig.add_trace(go.Scatter(x = x2, y = y2,  
-                               mode = 'markers', name = 'C2', marker=dict(size=2,color='green')))
-    fig.add_trace(go.Scatter(x = xsv2, y = ysv2,  
-                               mode = 'markers', name = 'Xsv2', marker=dict(size=3,color='red')))
+    
+    for i in range(len(KM)):
+        
+        j = str(i+1)
+        fig.add_trace(go.Scatter(x=KM[i]["data"][:,0], y=KM[i]["data"][:,1],  
+                                   mode='markers', name='C'+j , marker=dict(size=2)))
+        fig.add_trace(go.Scatter(x=KM[i]["Xsv"][:,0], y=KM[i]["Xsv"][:,1],  
+                               mode = 'markers', name='XSV'+j, marker=dict(size=3)))
+   
     fig.update_layout(showlegend = True)
     
     
