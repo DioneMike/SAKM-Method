@@ -2,7 +2,7 @@
 """
 Created on Thu Jun 22 11:51:52 2023
 
-@author: michel.dione
+@author: michel.dione & Habiboulaye.amadou
 """
 import numpy as np
 import pandas as pd
@@ -165,6 +165,7 @@ def KernelUpdate_NormTruncSGradient(WinKern,Xnew,Gamma,nu,eta,Kard):
             
             WKern["data"] = np.append(WKern["data"], Xnew, axis=0) # mis à jour des données du noyau
         
+             
         else :
             
             WKern["wgh"] = (1-eta)*WKern["wgh"]
@@ -451,12 +452,12 @@ def Eliminate_Noise_Clusters(Nc):
 # import matplotlib.pyplot as plt
 
 
-data = pd.read_csv('data/evolingdata.csv',sep="\t", header=None) #les données de test
-data.drop(2,axis=1,inplace=True)
-# data = pd.read_csv('data/Env_nonstat.csv',sep=",", header=None) # les données non stationnaires
+# data = pd.read_csv('data/evolingdata.csv',sep="\t", header=None) #les données de test
+# data.drop(2,axis=1,inplace=True)
+data = pd.read_csv('data/Env_nonstat.csv',sep=",", header=None) # les données non stationnaires
 X = np.array(data) # tableau à deux dimensions
-# xo = X[0:2596,0]
-# X =np.insert(X,2,xo,axis=1)[:,0:3] # on rajoute une troisiéme dimension.
+xo = X[0:2596,0]
+X =np.insert(X,2,xo,axis=1)[:,0:3] # on rajoute une troisiéme dimension.
 
 
 
@@ -475,7 +476,7 @@ KM = [] #l'espace des classe est initialement vide
 Xcl = np.empty((0,X.shape[1]))
 gamma = 2
 nu = 0.3
-eta = 0.2
+eta = 0.6
 kard =120
 ThSim = 0.99
 Nc = 10
@@ -496,27 +497,11 @@ i = T
 
 x = X[:,0]
 y = X[:,1]
-# z = X[:,2]
+z = X[:,2]
 
 
 
 #---------------------------Pour des données 3D --------------------------#
-# def plot_data():
-#     # pio.renderers.default = 'svg' # To plot in default 
-#     pio.renderers.default = 'browser' #To plot in browser  
-#     #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
-#     fig = go.Figure() #Create empty figure
-#     #add_trace method to add plots to the figure
-#     #create a line plot with 'Close' as legend, date column as x-axis and Close column as y-axis. 
-#     fig.add_trace(go.Scatter3d(x=x, y=y, z=z, 
-#                                mode='markers', name='data', marker=dict(size=2)))
-#     fig.update_layout(showlegend = True)
-#     return fig.show()
-
-# plot_data() #Show plot
-
-
-#---------------------------------Pour les données 2D -----------------------#
 def plot_data():
     # pio.renderers.default = 'svg' # To plot in default 
     pio.renderers.default = 'browser' #To plot in browser  
@@ -524,12 +509,28 @@ def plot_data():
     fig = go.Figure() #Create empty figure
     #add_trace method to add plots to the figure
     #create a line plot with 'Close' as legend, date column as x-axis and Close column as y-axis. 
-    fig.add_trace(go.Scatter(x=x, y=y, 
-                               mode='markers', name='data', marker=dict(size=2)))
+    fig.add_trace(go.Scatter3d(x=x, y=y, z=z, 
+                                mode='markers', name='data', marker=dict(size=2)))
     fig.update_layout(showlegend = True)
     return fig.show()
 
 plot_data() #Show plot
+
+
+#---------------------------------Pour les données 2D -----------------------#
+# def plot_data():
+#     # pio.renderers.default = 'svg' # To plot in default 
+#     pio.renderers.default = 'browser' #To plot in browser  
+#     #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
+#     fig = go.Figure() #Create empty figure
+#     #add_trace method to add plots to the figure
+#     #create a line plot with 'Close' as legend, date column as x-axis and Close column as y-axis. 
+#     fig.add_trace(go.Scatter(x=x, y=y, 
+#                                mode='markers', name='data', marker=dict(size=2)))
+#     fig.update_layout(showlegend = True)
+#     return fig.show()
+
+# plot_data() #Show plot
 
 
 
@@ -591,46 +592,53 @@ while Data.size > 0 :
 
 
 # ------------------------------------Pour les données 3D -----------------------#
-# def plot_cluster():
-#     # pio.renderers.default = 'svg' #To plot in default 
-#     pio.renderers.default = 'browser' #To plot in browser  
-#     #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
-#     fig = go.Figure() #Create empty figure
-#     #add_trace method to add plots to the figure
-#     for i in range(len(KM)):
-          # j = str(i+1)
-#         fig.add_trace(go.Scatter3d(x = KM[i]["data"][:,0], y = KM[i]["data"][:,1], z = KM[i]["data"][:,2], 
-#                                 mode = 'markers', name = 'C'+j, marker=dict(size=2)))
-#         fig.add_trace(go.Scatter3d(x = KM[i]["Xsv"][:,0], y = KM[i]["Xsv"][:,1], z = KM[i]["Xsv"][:,2], 
-#                                 mode = 'markers', name = 'XSV'+j, marker=dict(size=3)))
-
-#     fig.update_layout(showlegend = True)
-    
-    
-#     return fig.show()
-
-# plot_cluster() #Show plot
-
-#-----------------------------------Pour les données 2D---------------------#
-
 def plot_cluster():
     # pio.renderers.default = 'svg' #To plot in default 
     pio.renderers.default = 'browser' #To plot in browser  
-     
+    #Lets use plotly to plot the data. Plotly allows us to make an interactive chart. 
     fig = go.Figure() #Create empty figure
     #add_trace method to add plots to the figure
-    
     for i in range(len(KM)):
-        
         j = str(i+1)
-        fig.add_trace(go.Scatter(x=KM[i]["data"][:,0], y=KM[i]["data"][:,1],  
-                                   mode='markers', name='C'+j , marker=dict(size=2)))
-        fig.add_trace(go.Scatter(x=KM[i]["Xsv"][:,0], y=KM[i]["Xsv"][:,1],  
-                               mode = 'markers', name='XSV'+j, marker=dict(size=3)))
-   
+        fig.add_trace(go.Scatter3d(x = KM[i]["data"][:,0], y = KM[i]["data"][:,1], z = KM[i]["data"][:,2], 
+                                mode = 'markers', name = 'C'+j, marker=dict(size=2)))
+        fig.add_trace(go.Scatter3d(x = KM[i]["Xsv"][:,0], y = KM[i]["Xsv"][:,1], z = KM[i]["Xsv"][:,2], 
+                                mode = 'markers', name = 'XSV'+j, marker=dict(size=3)))
+
     fig.update_layout(showlegend = True)
     
     
     return fig.show()
 
 plot_cluster() #Show plot
+
+#-----------------------------------Pour les données 2D---------------------#
+
+# def plot_cluster():
+    
+#     pio.renderers.default = 'browser' #To plot in browser  
+#     fig = go.Figure() #Create empty figure
+#     #add_trace method to add plots to the figure
+    
+#     for i in range(len(KM)):
+#         j = str(i+1)
+        
+#         x = []
+#         y = []
+        
+#         fig.add_trace(go.Scatter(x=KM[i]["data"][:,0], y=KM[i]["data"][:,1],  
+#                                     mode='markers', name='C'+j , marker=dict(size=2)))
+#         for k in range(KM[i]["Xsv"].shape[0]):
+            
+#             if KM[i]["wgh"][k]>1e-5 :
+#                 x = np.append(x,KM[i]["Xsv"][k,0])
+#                 y = np.append(y,KM[i]["Xsv"][k,1])
+                
+#         fig.add_trace(go.Scatter(x=x, y=y,  
+#                                 mode = 'markers', name='XSV'+j, marker=dict(size=3)))
+#     fig.update_layout(showlegend = True)
+    
+    
+#     return fig.show()
+
+# plot_cluster() #Show plot
