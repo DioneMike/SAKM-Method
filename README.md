@@ -1,2 +1,2 @@
-# SAKM2
+# SAKM
 Self adaptive kernel machine
